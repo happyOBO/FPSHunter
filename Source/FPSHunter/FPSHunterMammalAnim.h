@@ -13,11 +13,19 @@ UCLASS()
 class FPSHUNTER_API UFPSHunterMammalAnim : public UAnimInstance
 {
 	GENERATED_BODY()
-
+public:
+	UFPSHunterMammalAnim();
 	virtual void NativeUpdateAnimation(float DeltaSeconds) override;
 
 private:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Pawn, Meta = (AllowPrivateAccess = true))
 	float Speed;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Pawn, Meta = (AllowPrivateAccess = true))
+	UAnimMontage* DeadMontage;
+
+
+public:
+	void PlayDeadMontage();
 	
 };

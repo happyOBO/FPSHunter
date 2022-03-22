@@ -2,6 +2,7 @@
 
 
 #include "FPSHunterMammal.h"
+#include "FPSHunterMammalAnim.h"
 
 // Sets default values
 AFPSHunterMammal::AFPSHunterMammal()
@@ -15,6 +16,18 @@ void AFPSHunterMammal::BeginPlay()
 {
 	Super::BeginPlay();
 	
+}
+
+void AFPSHunterMammal::PostInitializeComponents()
+{
+	Super::PostInitializeComponents();
+	AnimInstance = Cast<UFPSHunterMammalAnim>(GetMesh()->GetAnimInstance());
+
+	if (AnimInstance)
+	{
+		// 해당 Montage 가 끝나게되면 해당 함수를 호출해라! 
+		AnimInstance->OnMontageEnded.AddDynamic(this, &AFPSHunterMammal::OnDeadMontageEnded);
+	}
 }
 
 // Called every frame
@@ -33,9 +46,32 @@ void AFPSHunterMammal::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 
 void AFPSHunterMammal::Attacked(int attack)
 {
-	if (0 < _hp) _hp -= attack;
-	if (_hp < 0) _hp = 0;
-	UE_LOG(LogTemp, Warning, TEXT("hp : %d"), _hp);
+	if (IsDead) return;
 
+	if (0 < Hp) Hp -= attack;
+	else
+	{
+		
+		if (AnimInstance != nullptr)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("play Dead Anim"));
+			AnimInstance->PlayDeadMontage();
+		}
+
+		IsDead = true;
+		Hp = 0;
+	}
+	UE_LOG(LogTemp, Warning, TEXT("hp : %d"), Hp);
+
+}
+
+void AFPSHunterMammal::OnDeadMontageEnded(UAnimMontage* Montage, bool bInterrupted)
+{
+	Hide();
+}
+
+void AFPSHunterMammal::Hide()
+{
+	GetMesh()->SetVisibility(false);
 }
 

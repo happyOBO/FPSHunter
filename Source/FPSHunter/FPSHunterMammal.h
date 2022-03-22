@@ -18,6 +18,7 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+	virtual void PostInitializeComponents() override;
 
 public:	
 	// Called every frame
@@ -27,10 +28,20 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 public:
+	/** AnimMontage to play each time we fire */
+	UPROPERTY()
+	class UFPSHunterMammalAnim* AnimInstance;
+
+	UFUNCTION()
+	void OnDeadMontageEnded(UAnimMontage* Montage, bool bInterrupted);
+
+public:
 	void Attacked(int attack);
+	
+	void Hide();
 
 private:
-	int _hp = 300;
-
+	int Hp = 50;
+	bool IsDead = false;
 
 };
