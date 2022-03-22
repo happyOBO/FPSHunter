@@ -28,5 +28,6 @@ void UFPSHunterMammalAnim::NativeUpdateAnimation(float DeltaSeconds)
 
 void UFPSHunterMammalAnim::PlayDeadMontage()
 {
-	Montage_Play(DeadMontage, 2.f);
+	float rr = Montage_Play(DeadMontage, 2.f);
+	UE_LOG(LogTemp, Warning, TEXT("Montage play %f"), rr);
 }
