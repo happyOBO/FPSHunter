@@ -3,12 +3,19 @@
 
 #include "FPSHunterMammal.h"
 #include "FPSHunterMammalAnim.h"
+#include "FPSHunterMammalAI.h"
 
 // Sets default values
 AFPSHunterMammal::AFPSHunterMammal()
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
+
+	UE_LOG(LogTemp, Warning, TEXT("Called AFPSHunterMammal"));
+	// Pawn 이 AI 에 의해 조작될때 사용하는 컨트롤러 클래스
+	AIControllerClass = AFPSHunterMammalAI::StaticClass();
+	// 어떤 상황에서 AI 가 빙의 될 것인지
+	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
 }
 
 // Called when the game starts or when spawned

@@ -1,0 +1,34 @@
+// Fill out your copyright notice in the Description page of Project Settings.
+
+
+#include "FPSHunterMammalAI.h"
+#include "NavigationSystem.h"
+#include "Blueprint/AIBlueprintHelperLibrary.h"
+
+void AFPSHunterMammalAI::OnPossess(APawn* InPawn)
+{
+	Super::OnPossess(InPawn);
+	UE_LOG(LogTemp, Warning, TEXT("OnPossess"));
+	GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &AFPSHunterMammalAI::Move, 2.f, true);
+}
+
+void AFPSHunterMammalAI::OnUnPossess()
+{
+	Super::OnUnPossess();
+	GetWorld()->GetTimerManager().ClearTimer(TimerHandle);
+}
+
+void AFPSHunterMammalAI::Move()
+{
+	auto CurrentPawn = GetPawn();
+
+	UNavigationSystemV1* NavSystem = UNavigationSystemV1::GetNavigationSystem(GetWorld());
+	if (NavSystem == nullptr)
+		return;
+
+	FNavLocation RandomLocation;
+	if (NavSystem->GetRandomPointInNavigableRadius(FVector::ZeroVector, 500.f, RandomLocation))
+	{
+		UAIBlueprintHelperLibrary::SimpleMoveToLocation(this, RandomLocation);
+	}
+}
