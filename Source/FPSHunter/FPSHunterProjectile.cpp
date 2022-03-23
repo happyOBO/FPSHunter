@@ -3,7 +3,9 @@
 #include "FPSHunterProjectile.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "Components/SphereComponent.h"
+#include "Kismet/GameplayStatics.h"
 #include "FPSHunterMammal.h"
+#include "NiagaraFunctionLibrary.h"
 
 AFPSHunterProjectile::AFPSHunterProjectile() 
 {
@@ -38,6 +40,17 @@ void AFPSHunterProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActo
 
 	if (Mammal)
 	{
+		FVector ExplosionLocation = CollisionComp->GetComponentLocation();
+
+		if (BulletExplosionEffect)
+		{
+			UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), BulletExplosionEffect, ExplosionLocation);
+		}
+
+		if (BulletExplosionSound)
+		{
+			UGameplayStatics::PlaySoundAtLocation(GetWorld(), BulletExplosionSound, ExplosionLocation);
+		}
 		Mammal->Attacked(10);
 	}
 	// บฮต๚ศ๙ พืลอ รณธฎ

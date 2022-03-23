@@ -8,6 +8,8 @@
 
 class USphereComponent;
 class UProjectileMovementComponent;
+class UNiagaraSystem;
+class USoundBase;
 
 UCLASS(config=Game)
 class AFPSHunterProjectile : public AActor
@@ -21,6 +23,12 @@ class AFPSHunterProjectile : public AActor
 	/** Projectile movement component */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Movement, meta = (AllowPrivateAccess = "true"))
 	UProjectileMovementComponent* ProjectileMovement;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Bullet")
+	UNiagaraSystem* BulletExplosionEffect;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Bullet")
+	USoundBase* BulletExplosionSound;
 
 public:
 	AFPSHunterProjectile();
