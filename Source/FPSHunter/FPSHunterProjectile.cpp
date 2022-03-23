@@ -7,7 +7,9 @@
 #include "FPSHunterMammal.h"
 #include "NiagaraFunctionLibrary.h"
 
-AFPSHunterProjectile::AFPSHunterProjectile() 
+
+
+AFPSHunterProjectile::AFPSHunterProjectile()
 {
 	// Use a sphere as a simple collision representation
 	CollisionComp = CreateDefaultSubobject<USphereComponent>(TEXT("SphereComp"));
@@ -40,17 +42,31 @@ void AFPSHunterProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActo
 
 	if (Mammal)
 	{
-		FVector ExplosionLocation = CollisionComp->GetComponentLocation();
+		AFPSHunterProjectile::Explosion();
 
-		if (BulletExplosionEffect)
-		{
-			UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), BulletExplosionEffect, ExplosionLocation);
-		}
-
-		if (BulletExplosionSound)
-		{
-			UGameplayStatics::PlaySoundAtLocation(GetWorld(), BulletExplosionSound, ExplosionLocation);
-		}
 		Mammal->Attacked(10);
+		Destroy();
+	}
+}
+
+void AFPSHunterProjectile::LifeSpanExpired()
+{
+	Super::LifeSpanExpired();
+
+	AFPSHunterProjectile::Explosion();
+}
+
+void AFPSHunterProjectile::Explosion()
+{
+	FVector ExplosionLocation = CollisionComp->GetComponentLocation();
+
+	if (BulletExplosionEffect)
+	{
+		UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), BulletExplosionEffect, ExplosionLocation);
+	}
+
+	if (BulletExplosionSound)
+	{
+		UGameplayStatics::PlaySoundAtLocation(GetWorld(), BulletExplosionSound, ExplosionLocation);
 	}
 }

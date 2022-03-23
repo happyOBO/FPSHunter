@@ -30,6 +30,7 @@ class AFPSHunterProjectile : public AActor
 	UPROPERTY(EditDefaultsOnly, Category = "Bullet")
 	USoundBase* BulletExplosionSound;
 
+
 public:
 	AFPSHunterProjectile();
 
@@ -42,5 +43,9 @@ public:
 	/** Returns ProjectileMovement subobject **/
 	UProjectileMovementComponent* GetProjectileMovement() const { return ProjectileMovement; }
 
+	void Explosion();
+
+public:
+	virtual void LifeSpanExpired() override;
 };
 
