@@ -129,6 +129,7 @@ void AFPSHunterCharacter::OnFire()
 	// try and play the sound if specified
 	if (FireSound != nullptr)
 	{
+		GetActorForwardVector();
 		UGameplayStatics::PlaySoundAtLocation(this, FireSound, GetActorLocation());
 	}
 

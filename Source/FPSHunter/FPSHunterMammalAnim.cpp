@@ -2,6 +2,7 @@
 
 
 #include "FPSHunterMammalAnim.h"
+#include "FPSHunterMammal.h"
 
 UFPSHunterMammalAnim::UFPSHunterMammalAnim()
 {
@@ -18,12 +19,13 @@ UFPSHunterMammalAnim::UFPSHunterMammalAnim()
 void UFPSHunterMammalAnim::NativeUpdateAnimation(float DeltaSeconds)
 {
 	Super::NativeUpdateAnimation(DeltaSeconds);
-
+	
 	auto pawn = TryGetPawnOwner();
 	if (IsValid(pawn))
 	{
-		Speed = pawn->GetVelocity().Size();
+
 	}
+
 }
 
 void UFPSHunterMammalAnim::PlayDeadMontage()
