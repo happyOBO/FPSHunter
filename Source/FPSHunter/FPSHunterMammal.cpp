@@ -10,12 +10,11 @@ AFPSHunterMammal::AFPSHunterMammal()
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-
-	UE_LOG(LogTemp, Warning, TEXT("Called AFPSHunterMammal"));
 	// Pawn 이 AI 에 의해 조작될때 사용하는 컨트롤러 클래스
 	AIControllerClass = AFPSHunterMammalAI::StaticClass();
 	// 어떤 상황에서 AI 가 빙의 될 것인지
 	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
+	Hp = 50;
 }
 
 // Called when the game starts or when spawned
@@ -58,18 +57,11 @@ void AFPSHunterMammal::Attacked(int attack)
 	if (0 < Hp) Hp -= attack;
 	else
 	{
-		
-		if (AnimInstance != nullptr)
-		{
-			UE_LOG(LogTemp, Warning, TEXT("play Dead Anim"));
-			AnimInstance->PlayDeadMontage();
-		}
-
+		if (AnimInstance != nullptr) AnimInstance->PlayDeadMontage();
 		IsDead = true;
 		Hp = 0;
 	}
-	UE_LOG(LogTemp, Warning, TEXT("hp : %d"), Hp);
-
+	UE_LOG(LogTemp, Warning, TEXT("HP : %d"), Hp);
 }
 
 void AFPSHunterMammal::OnDeadMontageEnded(UAnimMontage* Montage, bool bInterrupted)

@@ -6,14 +6,7 @@
 
 UFPSHunterMammalAnim::UFPSHunterMammalAnim()
 {
-	UE_LOG(LogTemp, Warning, TEXT("UFPSHunterMammalAnim"));
-	static ConstructorHelpers::FObjectFinder<UAnimMontage> AM(TEXT("AnimMontage'/Game/Assets/Animations/Fox/Mammal_Montage_Fox_Dead.Mammal_Montage_Fox_Dead'"));
-	if (AM.Succeeded())
-	{
-		UE_LOG(LogTemp, Warning, TEXT("DeadMontage apply done"));
-		DeadMontage = AM.Object;
-		
-	}
+
 }
 
 void UFPSHunterMammalAnim::NativeUpdateAnimation(float DeltaSeconds)

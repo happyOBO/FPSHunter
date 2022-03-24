@@ -43,7 +43,8 @@ public:
 	void Hide();
 
 private:
-	int Hp = 50;
+	UPROPERTY(EditDefaultsOnly, Category = "Mammal")
+	int Hp;
 	bool IsDead = false;
 
 };

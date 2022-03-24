@@ -27,7 +27,7 @@ void AFPSHunterMammalAI::Move()
 	if (Mammal)
 	{
 		if (Mammal->IsDead) return;
-	}
+	} 
 
 
 	UNavigationSystemV1* NavSystem = UNavigationSystemV1::GetNavigationSystem(GetWorld());
