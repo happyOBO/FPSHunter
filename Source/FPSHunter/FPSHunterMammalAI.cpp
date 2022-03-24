@@ -4,6 +4,7 @@
 #include "FPSHunterMammalAI.h"
 #include "NavigationSystem.h"
 #include "Blueprint/AIBlueprintHelperLibrary.h"
+#include "FPSHunterMammal.h"
 
 void AFPSHunterMammalAI::OnPossess(APawn* InPawn)
 {
@@ -21,10 +22,18 @@ void AFPSHunterMammalAI::OnUnPossess()
 void AFPSHunterMammalAI::Move()
 {
 	auto CurrentPawn = GetPawn();
+	AFPSHunterMammal* Mammal = Cast<AFPSHunterMammal>(CurrentPawn);
+
+	if (Mammal)
+	{
+		if (Mammal->IsDead) return;
+	}
+
 
 	UNavigationSystemV1* NavSystem = UNavigationSystemV1::GetNavigationSystem(GetWorld());
 	if (NavSystem == nullptr)
 		return;
+
 	FNavLocation RandomLocation;
 	if (NavSystem->GetRandomPointInNavigableRadius(FVector::ZeroVector, 200.f, RandomLocation))
 	{

@@ -19,17 +19,10 @@ UFPSHunterMammalAnim::UFPSHunterMammalAnim()
 void UFPSHunterMammalAnim::NativeUpdateAnimation(float DeltaSeconds)
 {
 	Super::NativeUpdateAnimation(DeltaSeconds);
-	
-	auto pawn = TryGetPawnOwner();
-	if (IsValid(pawn))
-	{
-
-	}
 
 }
 
 void UFPSHunterMammalAnim::PlayDeadMontage()
 {
-	float rr = Montage_Play(DeadMontage, 2.f);
-	UE_LOG(LogTemp, Warning, TEXT("Montage play %f"), rr);
+	Montage_Play(DeadMontage, 2.f);
 }

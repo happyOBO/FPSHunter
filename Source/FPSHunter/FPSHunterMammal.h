@@ -6,11 +6,13 @@
 #include "GameFramework/Character.h"
 #include "FPSHunterMammal.generated.h"
 
+class AFPSHunterMammalAI;
+
 UCLASS()
 class FPSHUNTER_API AFPSHunterMammal : public ACharacter
 {
 	GENERATED_BODY()
-
+	friend class AFPSHunterMammalAI;
 public:
 	// Sets default values for this character's properties
 	AFPSHunterMammal();
