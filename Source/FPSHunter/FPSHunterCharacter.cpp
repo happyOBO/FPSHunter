@@ -56,6 +56,9 @@ AFPSHunterCharacter::AFPSHunterCharacter()
 	// Default offset from the character location for projectiles to spawn
 	GunOffset = FVector(100.0f, 0.0f, 10.0f);
 
+	CurrentWeaponSlot = 0;
+	
+
 }
 
 void AFPSHunterCharacter::BeginPlay()
@@ -101,12 +104,17 @@ void AFPSHunterCharacter::SetupPlayerInputComponent(class UInputComponent* Playe
 	PlayerInputComponent->BindAxis("TurnRate", this, &AFPSHunterCharacter::TurnAtRate);
 	PlayerInputComponent->BindAxis("LookUp", this, &APawn::AddControllerPitchInput);
 	PlayerInputComponent->BindAxis("LookUpRate", this, &AFPSHunterCharacter::LookUpAtRate);
+
+
+	// Weapon Up Down
+	InputComponent->BindAction("WeaponUp", IE_Pressed, this, &AFPSHunterCharacter::MoveUpWeaponInventorySlot);
+	InputComponent->BindAction("WeaponDown", IE_Pressed, this, &AFPSHunterCharacter::MoveDownWeaponInventorySlot);
 }
 
 void AFPSHunterCharacter::OnFire()
 {
 	// try and fire a projectile
-	if (ProjectileClass != nullptr)
+	if (GetCurrentlyWeapon() != nullptr)
 	{
 		UWorld* const World = GetWorld();
 		if (World != nullptr)
@@ -121,7 +129,7 @@ void AFPSHunterCharacter::OnFire()
 			ActorSpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButDontSpawnIfColliding;
 
 			// spawn the projectile at the muzzle
-			World->SpawnActor<AFPSHunterProjectile>(ProjectileClass, SpawnLocation, SpawnRotation, ActorSpawnParams);
+			World->SpawnActor<AFPSHunterProjectile>(GetCurrentlyWeapon(), SpawnLocation, SpawnRotation, ActorSpawnParams);
 
 		}
 	}
@@ -214,4 +222,23 @@ bool AFPSHunterCharacter::EnableTouchscreenMovement(class UInputComponent* Playe
 	}
 	
 	return false;
+}
+
+TSubclassOf<class AFPSHunterProjectile> AFPSHunterCharacter::GetCurrentlyWeapon()
+{
+	return WeaponInventory[CurrentWeaponSlot] != NULL ? WeaponInventory[CurrentWeaponSlot] : nullptr;
+}
+
+
+void AFPSHunterCharacter::MoveUpWeaponInventorySlot()
+{
+	CurrentWeaponSlot = FMath::Abs((CurrentWeaponSlot + 1) % NUM_OF_WEAPONS);
+}
+
+void AFPSHunterCharacter::MoveDownWeaponInventorySlot()
+{
+	if (CurrentWeaponSlot == 0)
+		CurrentWeaponSlot = NUM_OF_WEAPONS - 1;
+	else
+		CurrentWeaponSlot = FMath::Abs((CurrentWeaponSlot - 1) % NUM_OF_WEAPONS);
 }

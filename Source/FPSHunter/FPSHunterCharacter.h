@@ -106,13 +106,6 @@ protected:
 	// APawn interface
 	virtual void SetupPlayerInputComponent(UInputComponent* InputComponent) override;
 	// End of APawn interface
-
-	/* 
-	 * Configures input for touchscreen devices if there is a valid touch interface for doing so 
-	 *
-	 * @param	InputComponent	The input component pointer to bind controls to
-	 * @returns true if touch controls were enabled.
-	 */
 	bool EnableTouchscreenMovement(UInputComponent* InputComponent);
 
 public:
@@ -121,5 +114,24 @@ public:
 	/** Returns FirstPersonCameraComponent subobject **/
 	UCameraComponent* GetFirstPersonCameraComponent() const { return FirstPersonCameraComponent; }
 
+protected:
+
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = Projectile)
+	TArray<TSubclassOf<class AFPSHunterProjectile>> WeaponInventory;
+
+
+private:
+	/* Weapon 개수 */
+	const int32 NUM_OF_WEAPONS = 2;
+
+	/* 현재 weapon idx */
+	int32 CurrentWeaponSlot;
+
+	TSubclassOf<class AFPSHunterProjectile> GetCurrentlyWeapon();
+
+	void MoveUpWeaponInventorySlot();
+
+	void MoveDownWeaponInventorySlot();
 };
 
