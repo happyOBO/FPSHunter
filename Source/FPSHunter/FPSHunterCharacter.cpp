@@ -73,6 +73,8 @@ void AFPSHunterCharacter::BeginPlay()
 
 	Mesh1P->SetHiddenInGame(false, true);
 
+	WeaponUpdate();
+
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -233,6 +235,8 @@ TSubclassOf<class AFPSHunterProjectile> AFPSHunterCharacter::GetCurrentlyWeapon(
 void AFPSHunterCharacter::MoveUpWeaponInventorySlot()
 {
 	CurrentWeaponSlot = FMath::Abs((CurrentWeaponSlot + 1) % NUM_OF_WEAPONS);
+
+	WeaponUpdate();
 }
 
 void AFPSHunterCharacter::MoveDownWeaponInventorySlot()
@@ -241,4 +245,17 @@ void AFPSHunterCharacter::MoveDownWeaponInventorySlot()
 		CurrentWeaponSlot = NUM_OF_WEAPONS - 1;
 	else
 		CurrentWeaponSlot = FMath::Abs((CurrentWeaponSlot - 1) % NUM_OF_WEAPONS);
+
+
+	WeaponUpdate();
+}
+
+
+void AFPSHunterCharacter::WeaponUpdate()
+{
+	if (GetCurrentlyWeapon() != nullptr)
+	{
+		auto Weapon = GetCurrentlyWeapon().GetDefaultObject();
+		FP_Gun->SetSkeletalMesh(Weapon->WeaponMesh->SkeletalMesh);
+	}
 }

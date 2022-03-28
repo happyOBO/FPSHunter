@@ -133,5 +133,7 @@ private:
 	void MoveUpWeaponInventorySlot();
 
 	void MoveDownWeaponInventorySlot();
+
+	void WeaponUpdate();
 };
 
