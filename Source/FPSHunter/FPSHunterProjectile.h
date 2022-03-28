@@ -31,6 +31,8 @@ class AFPSHunterProjectile : public AActor
 	USoundBase* BulletExplosionSound;
 
 
+
+
 public:
 	AFPSHunterProjectile();
 
@@ -41,6 +43,9 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
 	USkeletalMeshComponent* WeaponMesh;
 
+	UPROPERTY(EditAnywhere)
+	UTexture2D* WeaponThumbnail;
+	
 	/** Returns CollisionComp subobject **/
 	USphereComponent* GetCollisionComp() const { return CollisionComp; }
 	/** Returns ProjectileMovement subobject **/

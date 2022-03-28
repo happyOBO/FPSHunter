@@ -226,6 +226,15 @@ bool AFPSHunterCharacter::EnableTouchscreenMovement(class UInputComponent* Playe
 	return false;
 }
 
+UTexture2D* AFPSHunterCharacter::GetCurrentWeaponThumbnail()
+{
+	if (GetCurrentlyWeapon() == nullptr) return nullptr;
+
+	auto Weapon = GetCurrentlyWeapon().GetDefaultObject();
+	return Weapon->WeaponThumbnail;
+
+}
+
 TSubclassOf<class AFPSHunterProjectile> AFPSHunterCharacter::GetCurrentlyWeapon()
 {
 	return WeaponInventory[CurrentWeaponSlot] != NULL ? WeaponInventory[CurrentWeaponSlot] : nullptr;
@@ -259,3 +268,4 @@ void AFPSHunterCharacter::WeaponUpdate()
 		FP_Gun->SetSkeletalMesh(Weapon->WeaponMesh->SkeletalMesh);
 	}
 }
+

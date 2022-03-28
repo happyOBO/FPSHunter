@@ -120,6 +120,10 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = Projectile)
 	TArray<TSubclassOf<class AFPSHunterProjectile>> WeaponInventory;
 
+	/* 주어진 아이템 썸네일 가져오기 */
+	UFUNCTION(BlueprintPure, Category = Projectile)
+	UTexture2D* GetCurrentWeaponThumbnail();
+
 
 private:
 	/* Weapon 개수 */
