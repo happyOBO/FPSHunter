@@ -116,11 +116,12 @@ public:
 
 protected:
 
-
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = Projectile)
-	TArray<TSubclassOf<class AFPSHunterProjectile>> WeaponInventory;
+	TArray<TSubclassOf<class AFPSHunterWeapon>> WeaponsClass;
 
-	/* 주어진 아이템 썸네일 가져오기 */
+	TArray<AFPSHunterWeapon*> WeaponInventory;
+
+	/* 현재 Weapon 썸네일 가져오기 */
 	UFUNCTION(BlueprintPure, Category = Projectile)
 	UTexture2D* GetCurrentWeaponThumbnail();
 
@@ -132,10 +133,13 @@ private:
 	/* 현재 weapon idx */
 	int32 CurrentWeaponSlot;
 
-	TSubclassOf<class AFPSHunterProjectile> GetCurrentlyWeapon();
+	/* 현재 weapon */
+	AFPSHunterWeapon* GetCurrentlyWeapon();
 
+	/* Weapon 변경(위)*/
 	void MoveUpWeaponInventorySlot();
 
+	/* Weapon 변경(아래)*/
 	void MoveDownWeaponInventorySlot();
 
 	void WeaponUpdate();

@@ -8,6 +8,7 @@
 #include "Components/InputComponent.h"
 #include "GameFramework/InputSettings.h"
 #include "Kismet/GameplayStatics.h"
+#include "FPSHunterWeapon.h"
 // #include "MotionControllerComponent.h"
 // #include "XRMotionControllerBase.h" // for FXRMotionControllerBase::RightHandSourceId
 //#include "HeadMountedDisplayFunctionLibrary.h"
@@ -58,7 +59,7 @@ AFPSHunterCharacter::AFPSHunterCharacter()
 
 	CurrentWeaponSlot = 0;
 	
-
+	WeaponInventory.SetNum(NUM_OF_WEAPONS);
 }
 
 void AFPSHunterCharacter::BeginPlay()
@@ -72,6 +73,17 @@ void AFPSHunterCharacter::BeginPlay()
 	// Show or hide the two versions of the gun based on whether or not we're using motion controllers.
 
 	Mesh1P->SetHiddenInGame(false, true);
+
+	// Weapon 생성
+	UWorld* const World = GetWorld();
+	if (World != nullptr)
+	{
+		int idx = 0;
+		for (auto& weapon : WeaponsClass)
+		{
+			WeaponInventory[idx++] = World->SpawnActor<AFPSHunterWeapon>(weapon);
+		}
+	}
 
 	WeaponUpdate();
 
@@ -126,12 +138,8 @@ void AFPSHunterCharacter::OnFire()
 			// MuzzleOffset is in camera space, so transform it to world space before offsetting from the character location to find the final muzzle position
 			const FVector SpawnLocation = ((FP_MuzzleLocation != nullptr) ? FP_MuzzleLocation->GetComponentLocation() : GetActorLocation()) + SpawnRotation.RotateVector(GunOffset);
 
-			//Set Spawn Collision Handling Override
-			FActorSpawnParameters ActorSpawnParams;
-			ActorSpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButDontSpawnIfColliding;
-
-			// spawn the projectile at the muzzle
-			World->SpawnActor<AFPSHunterProjectile>(GetCurrentlyWeapon(), SpawnLocation, SpawnRotation, ActorSpawnParams);
+			// 사격
+			GetCurrentlyWeapon()->Shoot(SpawnLocation, SpawnRotation);
 
 		}
 	}
@@ -218,8 +226,6 @@ bool AFPSHunterCharacter::EnableTouchscreenMovement(class UInputComponent* Playe
 		PlayerInputComponent->BindTouch(EInputEvent::IE_Pressed, this, &AFPSHunterCharacter::BeginTouch);
 		PlayerInputComponent->BindTouch(EInputEvent::IE_Released, this, &AFPSHunterCharacter::EndTouch);
 
-		//Commenting this out to be more consistent with FPS BP template.
-		//PlayerInputComponent->BindTouch(EInputEvent::IE_Repeat, this, &AFPSHunterCharacter::TouchUpdate);
 		return true;
 	}
 	
@@ -230,12 +236,12 @@ UTexture2D* AFPSHunterCharacter::GetCurrentWeaponThumbnail()
 {
 	if (GetCurrentlyWeapon() == nullptr) return nullptr;
 
-	auto Weapon = GetCurrentlyWeapon().GetDefaultObject();
+	auto Weapon = GetCurrentlyWeapon();
 	return Weapon->WeaponThumbnail;
 
 }
 
-TSubclassOf<class AFPSHunterProjectile> AFPSHunterCharacter::GetCurrentlyWeapon()
+AFPSHunterWeapon* AFPSHunterCharacter::GetCurrentlyWeapon()
 {
 	return WeaponInventory[CurrentWeaponSlot] != NULL ? WeaponInventory[CurrentWeaponSlot] : nullptr;
 }
@@ -264,7 +270,7 @@ void AFPSHunterCharacter::WeaponUpdate()
 {
 	if (GetCurrentlyWeapon() != nullptr)
 	{
-		auto Weapon = GetCurrentlyWeapon().GetDefaultObject();
+		auto Weapon = GetCurrentlyWeapon();
 		FP_Gun->SetSkeletalMesh(Weapon->WeaponMesh->SkeletalMesh);
 	}
 }

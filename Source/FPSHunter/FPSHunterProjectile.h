@@ -11,6 +11,7 @@ class UProjectileMovementComponent;
 class UNiagaraSystem;
 class USoundBase;
 
+
 UCLASS(config=Game)
 class AFPSHunterProjectile : public AActor
 {
@@ -39,12 +40,6 @@ public:
 	/** called when projectile hits something */
 	UFUNCTION()
 	void OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
-
-	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
-	USkeletalMeshComponent* WeaponMesh;
-
-	UPROPERTY(EditAnywhere)
-	UTexture2D* WeaponThumbnail;
 	
 	/** Returns CollisionComp subobject **/
 	USphereComponent* GetCollisionComp() const { return CollisionComp; }
