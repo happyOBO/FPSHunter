@@ -297,7 +297,7 @@ int32 AFPSHunterCharacter::GetTotalCoin()
 
 void AFPSHunterCharacter::LoadCurrentWeaponFinish(UAnimMontage* Montage, bool bInterrupted)
 {
-	UE_LOG(LogTemp, Log, TEXT("LoadCurrentWeaponFinish"));
+	
 	auto Weapon = GetCurrentlyWeapon();
 	if (Weapon != nullptr)
 	{

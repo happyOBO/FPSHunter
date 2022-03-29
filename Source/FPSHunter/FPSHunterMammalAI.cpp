@@ -34,9 +34,11 @@ void AFPSHunterMammalAI::Move()
 	if (NavSystem == nullptr)
 		return;
 
+	UE_LOG(LogTemp, Log, TEXT("Calc RandomLocation"));
 	FNavLocation RandomLocation;
-	if (NavSystem->GetRandomPointInNavigableRadius(FVector::ZeroVector, 200.f, RandomLocation))
+	if (NavSystem->GetRandomPointInNavigableRadius(FVector::ZeroVector, 100.f, RandomLocation))
 	{
+		UE_LOG(LogTemp, Log, TEXT("GetRandomPointInNavigableRadius"));
 		UAIBlueprintHelperLibrary::SimpleMoveToLocation(this, RandomLocation);
 	}
 }
