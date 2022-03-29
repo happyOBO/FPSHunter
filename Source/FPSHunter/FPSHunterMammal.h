@@ -37,14 +37,20 @@ public:
 	UFUNCTION()
 	void OnDeadMontageEnded(UAnimMontage* Montage, bool bInterrupted);
 
+
 public:
 	void Attacked(int attack);
 	
 	void Hide();
 
+	void Carved(int32& targetCoin);
+
 private:
 	UPROPERTY(EditDefaultsOnly, Category = "Mammal")
 	int Hp;
-	bool IsDead = false;
+	UPROPERTY(EditDefaultsOnly, Category = "Mammal")
+	int Coin;
 
+	bool IsDead = false;
+	bool IsCarved = false;
 };

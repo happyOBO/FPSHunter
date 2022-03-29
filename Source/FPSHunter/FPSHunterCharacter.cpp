@@ -9,6 +9,8 @@
 #include "GameFramework/InputSettings.h"
 #include "Kismet/GameplayStatics.h"
 #include "FPSHunterWeapon.h"
+#include "FPSHunterMammal.h"
+#include "DrawDebugHelpers.h"
 // #include "MotionControllerComponent.h"
 // #include "XRMotionControllerBase.h" // for FXRMotionControllerBase::RightHandSourceId
 //#include "HeadMountedDisplayFunctionLibrary.h"
@@ -130,6 +132,7 @@ void AFPSHunterCharacter::SetupPlayerInputComponent(class UInputComponent* Playe
 	InputComponent->BindAction("WeaponDown", IE_Pressed, this, &AFPSHunterCharacter::MoveDownWeaponInventorySlot);
 
 	InputComponent->BindAction("WeaponLoad", IE_Pressed, this, &AFPSHunterCharacter::LoadCurrentWeapon);
+	InputComponent->BindAction("Carving", IE_Pressed, this, &AFPSHunterCharacter::Carving);
 }
 
 void AFPSHunterCharacter::OnFire()
@@ -287,6 +290,24 @@ int32 AFPSHunterCharacter::GetCurrentWeaponTotalBullets()
 	return 0;
 }
 
+int32 AFPSHunterCharacter::GetTotalCoin()
+{
+	return TotalCoin;
+}
+
+void AFPSHunterCharacter::LoadCurrentWeaponFinish(UAnimMontage* Montage, bool bInterrupted)
+{
+	UE_LOG(LogTemp, Log, TEXT("LoadCurrentWeaponFinish"));
+	auto Weapon = GetCurrentlyWeapon();
+	if (Weapon != nullptr)
+	{
+		if (Montage == Weapon->LoadAnimation)
+			Weapon->LoadFinish();
+	}
+}
+
+
+
 void AFPSHunterCharacter::WeaponUpdate()
 {
 	auto Weapon = GetCurrentlyWeapon();
@@ -305,14 +326,40 @@ void AFPSHunterCharacter::LoadCurrentWeapon()
 	}
 }
 
-void AFPSHunterCharacter::LoadCurrentWeaponFinish(UAnimMontage* Montage, bool bInterrupted)
+void AFPSHunterCharacter::Carving()
 {
-	UE_LOG(LogTemp, Log, TEXT("LoadCurrentWeaponFinish"));
-	auto Weapon = GetCurrentlyWeapon();
-	if (Weapon != nullptr)
+
+	UWorld* World = GetWorld();
+	FVector Center = GetActorLocation();
+	float SearchRadius = 100.f;
+
+	if (World == nullptr)
+		return;
+	TArray<FOverlapResult> OverlapResults;
+	FCollisionQueryParams QueryParams(NAME_None, false, this);
+	bool bResult = World->OverlapMultiByChannel(
+		OverlapResults,
+		Center,
+		FQuat::Identity,
+		ECollisionChannel::ECC_GameTraceChannel2,
+		FCollisionShape::MakeSphere(SearchRadius),
+		QueryParams
+	);
+
+	if (bResult)
 	{
-		if(Montage == Weapon->LoadAnimation)
-			Weapon->LoadFinish();
+		for (auto& OverlapResult : OverlapResults)
+		{
+			AFPSHunterMammal* Mammal = Cast<AFPSHunterMammal>(OverlapResult.GetActor());
+			if (Mammal)
+			{
+				Mammal->Carved(TotalCoin);
+				DrawDebugSphere(World, Center, SearchRadius, 16, FColor::Green, false, 0.2f);
+				return;
+			}
+		}
 	}
+
+
 }
 

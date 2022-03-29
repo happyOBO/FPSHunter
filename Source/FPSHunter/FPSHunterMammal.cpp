@@ -32,7 +32,7 @@ void AFPSHunterMammal::PostInitializeComponents()
 	if (AnimInstance)
 	{
 		// 해당 Montage 가 끝나게되면 해당 함수를 호출해라! 
-		AnimInstance->OnMontageEnded.AddDynamic(this, &AFPSHunterMammal::OnDeadMontageEnded);
+		// AnimInstance->OnMontageEnded.AddDynamic(this, &AFPSHunterMammal::OnDeadMontageEnded);
 	}
 }
 
@@ -73,4 +73,13 @@ void AFPSHunterMammal::Hide()
 {
 	GetMesh()->SetVisibility(false);
 }
+
+void AFPSHunterMammal::Carved(int32& targetCoin)
+{
+	if (!IsDead) return;
+	targetCoin += Coin;
+	Destroy();
+}
+
+
 

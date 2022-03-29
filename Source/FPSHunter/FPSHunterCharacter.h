@@ -128,6 +128,13 @@ protected:
 	/* 현재 Weapon 총 탄환 수 가져오기 */
 	UFUNCTION(BlueprintPure, Category = Weapon)
 	int32 GetCurrentWeaponTotalBullets();
+	
+	/* 현재 Coin 개수 가져오기 */
+	UFUNCTION(BlueprintPure, Category = Weapon)
+	int32 GetTotalCoin();
+
+	UFUNCTION()
+	void LoadCurrentWeaponFinish(UAnimMontage* Montage, bool bInterrupted);
 
 private:
 	/* Weapon 개수 */
@@ -135,6 +142,8 @@ private:
 
 	/* 현재 weapon idx */
 	int32 CurrentWeaponSlot;
+
+	int32 TotalCoin = 0;
 
 	/* 현재 weapon */
 	AFPSHunterWeapon* GetCurrentlyWeapon();
@@ -151,7 +160,7 @@ private:
 
 	void LoadCurrentWeapon();
 
-	UFUNCTION()
-	void LoadCurrentWeaponFinish(UAnimMontage* Montage, bool bInterrupted);
+	void Carving();
+
 };
 
