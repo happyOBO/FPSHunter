@@ -8,6 +8,7 @@
 
 
 class USkeletalMeshComponent;
+class USoundBase;
 
 UCLASS()
 class FPSHUNTER_API AFPSHunterWeapon : public AActor
@@ -34,13 +35,18 @@ public:
 	UTexture2D* WeaponThumbnail;
 
 	/* Weapon 장전 애니메이션 */
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon")
 	UAnimMontage* LoadAnimation;
+
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon")
+	USoundBase* ShootSound;
 
 public:
 	void Shoot(FVector const& Location, FRotator const& Rotation);
 	void Hide(bool bVis);
 	void Load(UAnimInstance* AnimInstance);
+	void LoadFinish();
 	int32 GetRemainedBullets();
 	int32 GetTotalBullets();
 

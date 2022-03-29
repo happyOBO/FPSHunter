@@ -5,6 +5,7 @@
 #include "Animation/AnimInstance.h"
 #include "FPSHunterCharacter.h"
 #include "FPSHunterProjectile.h"
+#include "Kismet/GameplayStatics.h"
 // Sets default values
 AFPSHunterWeapon::AFPSHunterWeapon()
 {
@@ -39,6 +40,12 @@ void AFPSHunterWeapon::Shoot(FVector const& Location, FRotator const& Rotation)
 		// spawn the projectile at the muzzle
 		World->SpawnActor<AFPSHunterProjectile>(Projectile, Location, Rotation, ActorSpawnParams);
 		RemainedBullets--;
+
+		// try and play the sound if specified
+		if (ShootSound != nullptr)
+		{
+			UGameplayStatics::PlaySoundAtLocation(this, ShootSound, Location);
+		}
 	}
 }
 
@@ -55,8 +62,14 @@ void AFPSHunterWeapon::Load(UAnimInstance* AnimInstance)
 	{
 		AnimInstance->Montage_Play(LoadAnimation, 1.f);
 	}
+	
+}
+
+void AFPSHunterWeapon::LoadFinish()
+{
 	RemainedBullets = TotalBullets;
 }
+
 
 int32 AFPSHunterWeapon::GetRemainedBullets()
 {

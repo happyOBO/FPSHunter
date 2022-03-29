@@ -58,10 +58,6 @@ public:
 	//UPROPERTY(EditDefaultsOnly, Category=Projectile)
 	//TSubclassOf<class AFPSHunterProjectile> ProjectileClass;
 
-	/** Sound to play each time we fire */
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Gameplay)
-	USoundBase* FireSound;
-
 	/** AnimMontage to play each time we fire */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
 	UAnimMontage* FireAnimation;
@@ -154,5 +150,8 @@ private:
 	void WeaponLoad();
 
 	void LoadCurrentWeapon();
+
+	UFUNCTION()
+	void LoadCurrentWeaponFinish(UAnimMontage* Montage, bool bInterrupted);
 };
 

@@ -82,7 +82,11 @@ void AFPSHunterCharacter::BeginPlay()
 		for (auto& weapon : WeaponsClass)
 		{
 			WeaponInventory[idx++] = World->SpawnActor<AFPSHunterWeapon>(weapon);
-
+			UAnimInstance* AnimInstance = Mesh1P->GetAnimInstance();
+			if (AnimInstance != nullptr)
+			{
+				AnimInstance->OnMontageEnded.AddDynamic(this, &AFPSHunterCharacter::LoadCurrentWeaponFinish);
+			}
 		}
 	}
 
@@ -147,12 +151,6 @@ void AFPSHunterCharacter::OnFire()
 		}
 	}
 
-	// try and play the sound if specified
-	if (FireSound != nullptr)
-	{
-		GetActorForwardVector();
-		UGameplayStatics::PlaySoundAtLocation(this, FireSound, GetActorLocation());
-	}
 
 	// try and play a firing animation if specified
 	if (FireAnimation != nullptr)
@@ -300,11 +298,21 @@ void AFPSHunterCharacter::WeaponUpdate()
 
 void AFPSHunterCharacter::LoadCurrentWeapon()
 {
-	UE_LOG(LogTemp, Log, TEXT("LoadCurrentWeapon"));
 	auto Weapon = GetCurrentlyWeapon();
 	if (Weapon != nullptr)
 	{
 		Weapon->Load(Mesh1P->GetAnimInstance());
+	}
+}
+
+void AFPSHunterCharacter::LoadCurrentWeaponFinish(UAnimMontage* Montage, bool bInterrupted)
+{
+	UE_LOG(LogTemp, Log, TEXT("LoadCurrentWeaponFinish"));
+	auto Weapon = GetCurrentlyWeapon();
+	if (Weapon != nullptr)
+	{
+		if(Montage == Weapon->LoadAnimation)
+			Weapon->LoadFinish();
 	}
 }
 
