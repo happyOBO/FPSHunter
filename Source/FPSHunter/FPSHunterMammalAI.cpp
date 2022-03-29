@@ -10,7 +10,7 @@ void AFPSHunterMammalAI::OnPossess(APawn* InPawn)
 {
 	Super::OnPossess(InPawn);
 	UE_LOG(LogTemp, Warning, TEXT("OnPossess"));
-	GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &AFPSHunterMammalAI::Move, 4.f, true);
+	GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &AFPSHunterMammalAI::Move, 10.f, true);
 }
 
 void AFPSHunterMammalAI::OnUnPossess()
@@ -36,10 +36,11 @@ void AFPSHunterMammalAI::Move()
 
 	UE_LOG(LogTemp, Log, TEXT("Calc RandomLocation"));
 	FNavLocation RandomLocation;
-	if (NavSystem->GetRandomPointInNavigableRadius(FVector::ZeroVector, 100.f, RandomLocation))
+	if (NavSystem->GetRandomPointInNavigableRadius(CurrentPawn->GetActorLocation(), 2000.f, RandomLocation))
 	{
 		UE_LOG(LogTemp, Log, TEXT("GetRandomPointInNavigableRadius"));
 		UAIBlueprintHelperLibrary::SimpleMoveToLocation(this, RandomLocation);
+		UE_LOG(LogTemp, Log, TEXT("Calc RandomLocation : %f %f %f"), RandomLocation.Location.X, RandomLocation.Location.Y, RandomLocation.Location.Z);
 	}
 }
 

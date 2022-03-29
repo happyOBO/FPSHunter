@@ -51,5 +51,9 @@ public:
 
 public:
 	virtual void LifeSpanExpired() override;
+
+private:
+	UPROPERTY(EditAnywhere, Category = "Bullet")
+	int32 Attack;
 };
 

@@ -45,7 +45,7 @@ void AFPSHunterProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActo
 	{
 		AFPSHunterProjectile::Explosion();
 
-		Mammal->Attacked(10);
+		Mammal->Attacked(Attack);
 		Destroy();
 	}
 }
