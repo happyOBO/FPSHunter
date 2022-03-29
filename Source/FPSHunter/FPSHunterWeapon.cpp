@@ -2,9 +2,9 @@
 
 
 #include "FPSHunterWeapon.h"
+#include "Animation/AnimInstance.h"
 #include "FPSHunterCharacter.h"
 #include "FPSHunterProjectile.h"
-
 // Sets default values
 AFPSHunterWeapon::AFPSHunterWeapon()
 {
@@ -23,6 +23,8 @@ void AFPSHunterWeapon::BeginPlay()
 	
 }
 
+
+
 void AFPSHunterWeapon::Shoot(FVector const& Location, FRotator const& Rotation)
 {
 	if (RemainedBullets <= 0) return;
@@ -30,7 +32,6 @@ void AFPSHunterWeapon::Shoot(FVector const& Location, FRotator const& Rotation)
 	UWorld* const World = GetWorld();
 	if (World != nullptr)
 	{
-
 		//Set Spawn Collision Handling Override
 		FActorSpawnParameters ActorSpawnParams;
 		ActorSpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButDontSpawnIfColliding;
@@ -48,8 +49,13 @@ void AFPSHunterWeapon::Hide(bool bVis)
 	WeaponMesh->SetVisibility(!bVis);
 }
 
-void AFPSHunterWeapon::Load()
+void AFPSHunterWeapon::Load(UAnimInstance* AnimInstance)
 {
+	if (AnimInstance != nullptr)
+	{
+		AnimInstance->Montage_Play(LoadAnimation, 1.f);
+	}
+	RemainedBullets = TotalBullets;
 }
 
 int32 AFPSHunterWeapon::GetRemainedBullets()

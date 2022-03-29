@@ -82,6 +82,7 @@ void AFPSHunterCharacter::BeginPlay()
 		for (auto& weapon : WeaponsClass)
 		{
 			WeaponInventory[idx++] = World->SpawnActor<AFPSHunterWeapon>(weapon);
+
 		}
 	}
 
@@ -123,6 +124,8 @@ void AFPSHunterCharacter::SetupPlayerInputComponent(class UInputComponent* Playe
 	// Weapon Up Down
 	InputComponent->BindAction("WeaponUp", IE_Pressed, this, &AFPSHunterCharacter::MoveUpWeaponInventorySlot);
 	InputComponent->BindAction("WeaponDown", IE_Pressed, this, &AFPSHunterCharacter::MoveDownWeaponInventorySlot);
+
+	InputComponent->BindAction("WeaponLoad", IE_Pressed, this, &AFPSHunterCharacter::LoadCurrentWeapon);
 }
 
 void AFPSHunterCharacter::OnFire()
@@ -292,6 +295,16 @@ void AFPSHunterCharacter::WeaponUpdate()
 	if (Weapon != nullptr)
 	{
 		FP_Gun->SetSkeletalMesh(Weapon->WeaponMesh->SkeletalMesh);
+	}
+}
+
+void AFPSHunterCharacter::LoadCurrentWeapon()
+{
+	UE_LOG(LogTemp, Log, TEXT("LoadCurrentWeapon"));
+	auto Weapon = GetCurrentlyWeapon();
+	if (Weapon != nullptr)
+	{
+		Weapon->Load(Mesh1P->GetAnimInstance());
 	}
 }
 

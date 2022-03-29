@@ -150,5 +150,9 @@ private:
 	void MoveDownWeaponInventorySlot();
 
 	void WeaponUpdate();
+
+	void WeaponLoad();
+
+	void LoadCurrentWeapon();
 };
 

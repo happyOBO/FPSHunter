@@ -33,11 +33,14 @@ public:
 	UPROPERTY(EditAnywhere)
 	UTexture2D* WeaponThumbnail;
 
+	/* Weapon 장전 애니메이션 */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
+	UAnimMontage* LoadAnimation;
 
 public:
 	void Shoot(FVector const& Location, FRotator const& Rotation);
 	void Hide(bool bVis);
-	void Load();
+	void Load(UAnimInstance* AnimInstance);
 	int32 GetRemainedBullets();
 	int32 GetTotalBullets();
 
@@ -45,6 +48,5 @@ private:
 	UPROPERTY(EditAnywhere, Category = "Bullet")
 	int32 TotalBullets;
 	int32 RemainedBullets;
-	
 
 };
