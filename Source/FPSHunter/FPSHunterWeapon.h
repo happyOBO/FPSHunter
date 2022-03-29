@@ -33,14 +33,17 @@ public:
 	UPROPERTY(EditAnywhere)
 	UTexture2D* WeaponThumbnail;
 
+
 public:
 	void Shoot(FVector const& Location, FRotator const& Rotation);
 	void Hide(bool bVis);
 	void Load();
+	int32 GetRemainedBullets();
+	int32 GetTotalBullets();
 
 private:
 	UPROPERTY(EditAnywhere, Category = "Bullet")
-	int32 NUM_OF_TOTAL_BULLETS;
+	int32 TotalBullets;
 	int32 RemainedBullets;
 	
 

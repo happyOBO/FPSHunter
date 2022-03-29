@@ -54,9 +54,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Gameplay)
 	FVector GunOffset;
 
-	/** Projectile class to spawn */
-	UPROPERTY(EditDefaultsOnly, Category=Projectile)
-	TSubclassOf<class AFPSHunterProjectile> ProjectileClass;
+	///** Projectile class to spawn */
+	//UPROPERTY(EditDefaultsOnly, Category=Projectile)
+	//TSubclassOf<class AFPSHunterProjectile> ProjectileClass;
 
 	/** Sound to play each time we fire */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Gameplay)
@@ -116,15 +116,22 @@ public:
 
 protected:
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = Projectile)
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = Weapon)
 	TArray<TSubclassOf<class AFPSHunterWeapon>> WeaponsClass;
 
 	TArray<AFPSHunterWeapon*> WeaponInventory;
 
 	/* 현재 Weapon 썸네일 가져오기 */
-	UFUNCTION(BlueprintPure, Category = Projectile)
+	UFUNCTION(BlueprintPure, Category = Weapon)
 	UTexture2D* GetCurrentWeaponThumbnail();
 
+	/* 현재 Weapon 남은 탄환 수 가져오기 */
+	UFUNCTION(BlueprintPure, Category = Weapon)
+	int32 GetCurrentWeaponRemainedBullets();
+
+	/* 현재 Weapon 총 탄환 수 가져오기 */
+	UFUNCTION(BlueprintPure, Category = Weapon)
+	int32 GetCurrentWeaponTotalBullets();
 
 private:
 	/* Weapon 개수 */

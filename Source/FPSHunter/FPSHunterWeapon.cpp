@@ -11,18 +11,21 @@ AFPSHunterWeapon::AFPSHunterWeapon()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = false;
 	WeaponMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("WeaponMesh"));
+	
 	// Hide(true);
 }
 
 // Called when the game starts or when spawned
 void AFPSHunterWeapon::BeginPlay()
 {
+	RemainedBullets = TotalBullets;
 	Super::BeginPlay();
 	
 }
 
 void AFPSHunterWeapon::Shoot(FVector const& Location, FRotator const& Rotation)
 {
+	if (RemainedBullets <= 0) return;
 
 	UWorld* const World = GetWorld();
 	if (World != nullptr)
@@ -34,8 +37,11 @@ void AFPSHunterWeapon::Shoot(FVector const& Location, FRotator const& Rotation)
 
 		// spawn the projectile at the muzzle
 		World->SpawnActor<AFPSHunterProjectile>(Projectile, Location, Rotation, ActorSpawnParams);
+		RemainedBullets--;
 	}
 }
+
+
 
 void AFPSHunterWeapon::Hide(bool bVis)
 {
@@ -44,5 +50,15 @@ void AFPSHunterWeapon::Hide(bool bVis)
 
 void AFPSHunterWeapon::Load()
 {
+}
+
+int32 AFPSHunterWeapon::GetRemainedBullets()
+{
+	return RemainedBullets;
+}
+
+int32 AFPSHunterWeapon::GetTotalBullets()
+{
+	return TotalBullets;
 }
 

@@ -266,11 +266,31 @@ void AFPSHunterCharacter::MoveDownWeaponInventorySlot()
 }
 
 
+int32 AFPSHunterCharacter::GetCurrentWeaponRemainedBullets()
+{
+	auto Weapon = GetCurrentlyWeapon();
+	if (Weapon != nullptr)
+	{
+		return Weapon->GetRemainedBullets();
+	}
+	return 0;
+}
+
+int32 AFPSHunterCharacter::GetCurrentWeaponTotalBullets()
+{
+	auto Weapon = GetCurrentlyWeapon();
+	if (Weapon != nullptr)
+	{
+		return Weapon->GetTotalBullets();
+	}
+	return 0;
+}
+
 void AFPSHunterCharacter::WeaponUpdate()
 {
-	if (GetCurrentlyWeapon() != nullptr)
+	auto Weapon = GetCurrentlyWeapon();
+	if (Weapon != nullptr)
 	{
-		auto Weapon = GetCurrentlyWeapon();
 		FP_Gun->SetSkeletalMesh(Weapon->WeaponMesh->SkeletalMesh);
 	}
 }
